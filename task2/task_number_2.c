@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // Structure to store person data
 typedef struct {
@@ -8,7 +9,7 @@ typedef struct {
     int id;
 } Person;
 
-// Constructing Doubly Linked List Node 
+// Doubly Linked List Node
 typedef struct Node {
     Person person;
     struct Node* prev;
@@ -26,7 +27,7 @@ Node* createNode(char* name, int id) {
     return newNode;
 }
 
-// Insert node at the end of the list
+// Insert node 
 void insert(Node** head, char* name, int id) {
     Node* newNode = createNode(name, id);
     if (*head == NULL) {
@@ -43,7 +44,7 @@ void insert(Node** head, char* name, int id) {
     printf("Log: Inserted node with ID %d at the end of the list.\n", id);
 }
 
-//Will Delete the node by ID
+// Delete node by ID
 void delete(Node** head, int id) {
     if (*head == NULL) {
         printf("Log: List is empty, nothing to delete.\n");
@@ -57,18 +58,18 @@ void delete(Node** head, int id) {
 
     if (temp == NULL) {
         printf("Log: Node with ID %d not found.\n", id);
-        return; // ID not found
+        return; 
     }
 
     if (temp->prev != NULL) temp->prev->next = temp->next;
     if (temp->next != NULL) temp->next->prev = temp->prev;
     
-    if (temp == *head) *head = temp->next;  // If head is removed
+    if (temp == *head) *head = temp->next;  
     free(temp);
     printf("Log: Deleted node with ID %d.\n", id);
 }
 
-// Sort the list by ID (simple bubble sort)
+// Sorting Link list by id
 void sort(Node** head) {
     if (*head == NULL) {
         printf("Log: List is empty, nothing to sort.\n");
@@ -90,7 +91,7 @@ void sort(Node** head) {
     printf("Log: List sorted by ID.\n");
 }
 
-
+// Display Function
 void display(Node* head) {
     if (head == NULL) {
         printf("Log: List is empty.\n");
@@ -109,6 +110,29 @@ void display(Node* head) {
     printf("->NULL\n");
 }
 
+// Error handling.......
+// Function to validate if input is an integer
+int getValidInt(const char* prompt) {
+    int id;
+    char input[50];
+    while (1) {
+        printf("%s", prompt);
+        if (fgets(input, sizeof(input), stdin)) {
+            if (sscanf(input, "%d", &id) == 1) {
+                return id; 
+            } else {
+                printf("Invalid input! Please enter a valid integer.\n");
+            }
+        }
+    }
+}
+
+
+void getValidString(const char* prompt, char* output) {
+    printf("%s", prompt);
+    fgets(output, 50, stdin);
+    output[strcspn(output, "\n")] = 0; 
+}
 
 int main() {
     Node* head = NULL;
@@ -118,18 +142,16 @@ int main() {
     while (1) {
         printf("\n1. Insert\n2. Delete\n3. Sort\n4. Display\n5. Exit\nChoose an option: ");
         scanf("%d", &choice);
+        getchar(); // To consume the newline character left by scanf
 
         switch (choice) {
             case 1:
-                printf("Enter ID: ");
-                scanf("%d", &id);
-                printf("Enter Name: ");
-                scanf("%s", name);
+                id = getValidInt("Enter ID: ");
+                getValidString("Enter Name: ", name);
                 insert(&head, name, id);
                 break;
             case 2:
-                printf("Enter ID to delete: ");
-                scanf("%d", &id);
+                id = getValidInt("Enter ID to delete: ");
                 delete(&head, id);
                 break;
             case 3:
