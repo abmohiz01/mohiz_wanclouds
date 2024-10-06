@@ -1,2 +1,2 @@
 # Mohiz_wanclouds
-Kindly vist Master Branch
+Kindly visit Master Branch
