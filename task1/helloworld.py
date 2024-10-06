@@ -15,8 +15,6 @@ int hello(void *ctx) {
 b = BPF(text=program)
 clone = b.get_syscall_fnname("clone")
 b.attach_kprobe(event = clone, fn_name = "hello")
-b.trace_print
-
 # Print header
 print("%-18s %-16s %-6s %s" % ("TIME(s)", "COMM", "PID", "MESSAGE"))
 
