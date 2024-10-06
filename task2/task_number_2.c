@@ -8,7 +8,7 @@ typedef struct {
     int id;
 } Person;
 
-// Doubly Linked List Node
+// Constructing Doubly Linked List Node 
 typedef struct Node {
     Person person;
     struct Node* prev;
@@ -43,7 +43,7 @@ void insert(Node** head, char* name, int id) {
     printf("Log: Inserted node with ID %d at the end of the list.\n", id);
 }
 
-// Delete a node by ID
+//Will Delete the node by ID
 void delete(Node** head, int id) {
     if (*head == NULL) {
         printf("Log: List is empty, nothing to delete.\n");
@@ -90,7 +90,7 @@ void sort(Node** head) {
     printf("Log: List sorted by ID.\n");
 }
 
-// Display the list in the format ID1->ID2->NULL
+
 void display(Node* head) {
     if (head == NULL) {
         printf("Log: List is empty.\n");
@@ -100,7 +100,7 @@ void display(Node* head) {
     Node* temp = head;
     printf("List: ");
     while (temp != NULL) {
-        printf("%d", temp->person.id);
+        printf("%d(%s)", temp->person.id, temp->person.name);
         if (temp->next != NULL) {
             printf("->");
         }
@@ -108,6 +108,7 @@ void display(Node* head) {
     }
     printf("->NULL\n");
 }
+
 
 int main() {
     Node* head = NULL;
