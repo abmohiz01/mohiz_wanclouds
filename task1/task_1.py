@@ -7,14 +7,14 @@ import os
 
 # Check if the name argument is provided
 if len(sys.argv) != 2:
-    print("Usage: sudo python3 helloworld.py <your_name>")
+    print("Usage: sudo python3 task_1.py <your_name>")
     exit(1)
 
 name = sys.argv[1]
 
 # Defining BPF program
 program = """
-int hello(void *ctx) {
+int taskOne(void *ctx) {
     char name[16];
     bpf_get_current_comm(&name, sizeof(name));
     bpf_trace_printk("Running process with name: %s\\n", name);
@@ -24,13 +24,13 @@ int hello(void *ctx) {
 
 b = BPF(text=program)
 clone = b.get_syscall_fnname("clone")
-b.attach_kprobe(event=clone, fn_name="hello")
+b.attach_kprobe(event=clone, fn_name="taskOne")
 b.trace_print
 
-# Print header
+
 print("%-18s %-16s %-6s %s" % ("TIME(s)", "COMM", "PID", "MESSAGE"))
 
-# Compile and run the C program
+# Compiling the C program
 c_program = """
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,18 +47,18 @@ int main(int argc, char *argv[]) {
     // Simulate some activity by calling a system call in a loop
     for (int i = 0; i < 8; i++) {
         printf("Process %s is doing some work... (%d)\\n", name, i + 1);
-        sleep(3); // Simulating work with sleep
+        sleep(1); // Simulating work with sleep
     }
     printf("Process %s completed its work.\\n", name);
     return 0;
 }
 """
 
-with open("helloworld.c", "w") as f:
+with open("program_1.c", "w") as f:
     f.write(c_program)
 
-os.system(f"gcc -o helloworld helloworld.c")
-os.system(f"./helloworld {name}")
+os.system(f"gcc -o program_1 program_1.c")
+os.system(f"./program_1 {name}")
 
 # Trace output
 while True:
